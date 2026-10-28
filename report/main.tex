@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+
+\title{Econometrics -- Problem Set 2}
+\author{Travis Bruffy}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1(a)}
+
+Define $lwage_i=\log(wage_i)$. For each education level
+$e\in\{12,\ldots,17\}$ and age $a\in\{26,\ldots,30\}$,
+define
+\[
+d_{e,a,i}
+=\mathbf{1}\{education_i=e,\ age_i=a\}.
+\]
+
+We estimate the regression
+\[
+lwage_i
+=\sum_{e=12}^{17}\sum_{a=26}^{30}
+\alpha_{e,a}d_{e,a,i}+\epsilon_i.
+\]
+No additional intercept is included because the
+30 dummy variables sum to one for every observation.
+
+Since $E(\epsilon_i\mid education_i,age_i)=0$,
+\[
+\alpha_{e,a}
+=f(e,a)
+=E[lwage_i\mid education_i=e,\ age_i=a].
+\]
+Each coefficient is therefore the population mean
+log wage for its education--age group. Its OLS
+estimate is the corresponding sample mean log wage.
+This specification permits a separate conditional
+mean for every group.
+
+Table~\ref{tab:ps1a} reports the estimates and
+conventional standard errors, which assume a
+common error variance across groups.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Education--age group estimates}
+\label{tab:ps1a}
+\input{ps1a_results.tex}
+\end{table}
+
+\end{document}
