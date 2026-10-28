@@ -53,5 +53,102 @@ common error variance across groups.
 \label{tab:ps1a}
 \input{ps1a_results.tex}
 \end{table}
+\clearpage
+\section*{Problem 1(b)}
 
+We test whether the unrestricted conditional means satisfy
+\[
+H_0:\quad
+\alpha_{e,a}
+=\beta_0+\beta_1 e+\beta_2 a+\beta_3 ea
+\]
+for all education--age combinations, against the
+alternative that no such coefficient vector exists.
+
+The unrestricted model has 30 parameters, whereas
+the restricted model has four. The null therefore
+imposes 26 independent restrictions.
+
+\subsection*{Specification of $R$ and $q$}
+
+Choose the four corner groups
+\[
+\mathcal{C}
+=\{(12,26),(12,30),(17,26),(17,30)\}.
+\]
+For each of the remaining 26 groups $(e,a)$, define
+\[
+u=\frac{e-12}{5},
+\qquad
+v=\frac{a-26}{4}.
+\]
+Under the null hypothesis, the following restriction holds:
+\[
+\begin{aligned}
+\alpha_{e,a}
+&-(1-u)(1-v)\alpha_{12,26}\\
+&-(1-u)v\alpha_{12,30}\\
+&-u(1-v)\alpha_{17,26}
+-uv\alpha_{17,30}=0.
+\end{aligned}
+\]
+
+These equations specify $H_0:R\alpha=q$, where
+$R$ is a $26\times30$ matrix and
+$q=\mathbf{0}_{26}$.
+
+The columns of $R$ follow the ordering of $\alpha$
+given in the question. For each non-corner group,
+the corresponding row has a coefficient of one
+on $\alpha_{e,a}$, the four negative weights above
+on the corner coefficients, and zeros elsewhere.
+Order the rows by education and then age,
+omitting the four corner groups.
+
+For example, the restriction for $(e,a)=(12,27)$ is
+\[
+\alpha_{12,27}
+-\frac34\alpha_{12,26}
+-\frac14\alpha_{12,30}=0.
+\]
+
+The restrictions are independent because each
+non-corner coefficient appears in exactly one row
+with coefficient one. Thus $\operatorname{rank}(R)=26$.
+
+\subsection*{F-test}
+
+The estimated restricted conditional mean is
+\[
+\begin{aligned}
+\widehat{E}[lwage\mid education,age]
+={}&6.107505+0.197808\,education\\
+&+0.064883\,age\\
+&-0.002520(education\times age).
+\end{aligned}
+\]
+
+The residual sums of squares are
+\[
+SSR_U=608.0274,
+\qquad
+SSR_R=624.7819.
+\]
+With $n=898$, the conventional F-statistic is
+\[
+F
+=\frac{(SSR_R-SSR_U)/26}{SSR_U/(898-30)}
+=\frac{(624.7819-608.0274)/26}{608.0274/868}
+\approx0.9199.
+\]
+
+Using the $F_{26,868}$ reference distribution gives
+a p-value of approximately $0.5806$.
+
+Since $0.5806>0.05$, we do not reject the null
+hypothesis at the 5\% significance level.
+The restrictions do not produce a statistically
+significant deterioration in fit under the
+conventional F-test assumptions. This does not
+establish that the restricted model is true.
 \end{document}
