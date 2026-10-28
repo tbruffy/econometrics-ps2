@@ -879,5 +879,480 @@ significant evidence that the female population
 log-wage variance exceeds the male variance.
 The conventional rejection is sensitive to
 the normality assumption.
+\clearpage
+\section*{Problem 4(a)}
+
+Define
+\[
+Y_i=\frac{1}{T_i}-\frac{1}{24},
+\qquad
+D_{ij}=\mathbf{1}\{\text{alien }i
+\text{ is of type }j\}.
+\]
+Let
+\[
+N_j=\sum_{i=1}^nD_{ij}
+\]
+be the number of sampled aliens of type $j$.
+We treat the number of types $p$ as fixed.
+
+Regression on all $p$ type dummies without
+an intercept gives the sample mean for each type:
+\[
+\widehat{\beta}_j
+=\frac{\sum_{i=1}^nD_{ij}Y_i}{N_j}.
+\]
+Since $Y_i=\beta_j+\epsilon_i$ for type $j$,
+\[
+\sqrt{n}(\widehat{\beta}_j-\beta_j)
+=
+\frac{
+n^{-1/2}\sum_{i=1}^nD_{ij}\epsilon_i
+}{
+N_j/n
+}.
+\]
+
+Each type is sampled with probability $1/p$.
+Therefore, by the law of large numbers,
+\[
+\frac{N_j}{n}\xrightarrow{p}\frac{1}{p}.
+\]
+
+For the joint limiting distribution, define
+\[
+D_i=(D_{i1},\ldots,D_{ip})'.
+\]
+The conditional error distribution does not
+depend on type, and the errors have mean zero
+and variance one. Hence,
+\[
+E(D_i\epsilon_i)=0,
+\qquad
+E(D_iD_i'\epsilon_i^2)=\frac{1}{p}I_p.
+\]
+The off-diagonal entries are zero because
+$D_{ij}D_{ik}=0$ whenever $j\neq k$.
+
+By the multivariate central limit theorem,
+\[
+\frac{1}{\sqrt{n}}\sum_{i=1}^nD_i\epsilon_i
+\xrightarrow{d}
+N_p\left(0,\frac{1}{p}I_p\right).
+\]
+
+The dummy-variable design matrix satisfies
+\[
+\frac{X'X}{n}
+=
+\operatorname{diag}
+\left(\frac{N_1}{n},\ldots,\frac{N_p}{n}\right)
+\xrightarrow{p}\frac{1}{p}I_p.
+\]
+Using
+\[
+\sqrt{n}(\widehat{\beta}-\beta)
+=
+\left(\frac{X'X}{n}\right)^{-1}
+\frac{1}{\sqrt{n}}\sum_{i=1}^nD_i\epsilon_i,
+\]
+Slutsky's theorem gives
+\[
+\boxed{
+\sqrt{n}(\widehat{\beta}-\beta)
+\xrightarrow{d}N_p(0,pI_p).
+}
+\]
+Indeed, the limiting covariance matrix is
+\[
+(pI_p)\left(\frac{1}{p}I_p\right)(pI_p)'
+=pI_p.
+\]
+
+Each type therefore receives approximately
+$n/p$ observations, giving an approximate
+variance $p/n$ for its OLS estimate.
+
+The estimates require every type to be
+represented. This occurs with probability
+tending to one, since
+\[
+P(\text{at least one type is absent})
+\leq p\left(1-\frac{1}{p}\right)^n
+\longrightarrow0.
+\]
+\section*{Problem 4(b)}
+
+The LASSO estimator minimizes
+\[
+\|Y-Xb\|^2+\lambda\sum_{j=1}^p|b_j|,
+\qquad \lambda\geq0.
+\]
+Because each observation belongs to exactly
+one alien type,
+\[
+\|Y-Xb\|^2
+=
+\sum_{j=1}^p
+\sum_{i:D_{ij}=1}(Y_i-b_j)^2.
+\]
+
+For a type with $N_j>0$, its OLS estimate
+$\widehat{\beta}_j$ is the sample mean.
+The within-group sum of squares decomposes as
+\[
+\begin{aligned}
+\sum_{i:D_{ij}=1}(Y_i-b_j)^2
+={}&
+\sum_{i:D_{ij}=1}(Y_i-\widehat{\beta}_j)^2\\
+&+N_j(b_j-\widehat{\beta}_j)^2.
+\end{aligned}
+\]
+The cross term vanishes because
+\[
+\sum_{i:D_{ij}=1}
+(Y_i-\widehat{\beta}_j)=0.
+\]
+
+Therefore, apart from a constant independent
+of $b$, the objective is
+\[
+\sum_{j=1}^p
+\left[
+N_j(b_j-\widehat{\beta}_j)^2+\lambda|b_j|
+\right].
+\]
+Each coordinate can be minimized separately.
+
+For $b_j>0$, the first-order condition is
+\[
+2N_j(b_j-\widehat{\beta}_j)+\lambda=0,
+\]
+giving
+\[
+b_j=\widehat{\beta}_j-\frac{\lambda}{2N_j}.
+\]
+This solution is positive when
+$\widehat{\beta}_j>\lambda/(2N_j)$.
+
+For $b_j<0$, the first-order condition is
+\[
+2N_j(b_j-\widehat{\beta}_j)-\lambda=0,
+\]
+giving
+\[
+b_j=\widehat{\beta}_j+\frac{\lambda}{2N_j}.
+\]
+This solution is negative when
+$\widehat{\beta}_j<-\lambda/(2N_j)$.
+
+At $b_j=0$, the subgradient condition is
+\[
+0\in-2N_j\widehat{\beta}_j+\lambda[-1,1],
+\]
+which holds precisely when
+$|\widehat{\beta}_j|\leq\lambda/(2N_j)$.
+
+Combining the cases,
+\[
+\boxed{
+\widehat{\beta}_{j,\mathrm{Lasso}}
+=
+\begin{cases}
+\widehat{\beta}_j-\dfrac{\lambda}{2N_j},
+&
+\widehat{\beta}_j>\dfrac{\lambda}{2N_j},
+\\[6pt]
+0,
+&
+|\widehat{\beta}_j|\leq\dfrac{\lambda}{2N_j},
+\\[6pt]
+\widehat{\beta}_j+\dfrac{\lambda}{2N_j},
+&
+\widehat{\beta}_j<-\dfrac{\lambda}{2N_j}.
+\end{cases}
+}
+\]
+
+Equivalently,
+\[
+\widehat{\beta}_{j,\mathrm{Lasso}}
+=
+\operatorname{sgn}(\widehat{\beta}_j)
+\left(
+|\widehat{\beta}_j|-\frac{\lambda}{2N_j}
+\right)_+,
+\]
+where $(x)_+=\max\{x,0\}$.
+
+Thus LASSO soft-thresholds the OLS group means.
+Estimates within the threshold are set to zero,
+while the others are shrunk towards zero.
+For a fixed penalty, types with more observations
+have smaller thresholds.
+
+These formulas apply when $N_j>0$, an event
+whose probability tends to one for every type.
+The stated optimization is over unrestricted
+$b$, so the population condition $\beta_j\geq0$
+is not imposed as an additional constraint.
+\section*{Problem 4(c)}
+
+Define the soft-thresholding function
+\[
+S(w,a)=\operatorname{sgn}(w)(|w|-a)_+.
+\]
+From part (b),
+\[
+\widehat{\beta}_{j,\mathrm{Lasso}}
+=S(\widehat{\beta}_j,\tau_{j,n}),
+\qquad
+\tau_{j,n}=\frac{\lambda_n}{2N_j}.
+\]
+Also, by part (a),
+\[
+W_{j,n}:=\sqrt{n}(\widehat{\beta}_j-\beta_j)
+\xrightarrow{d}W,
+\qquad W\sim N(0,p).
+\]
+
+The threshold at the $\sqrt{n}$ scale is
+\[
+a_{j,n}
+:=\sqrt{n}\tau_{j,n}
+=
+\frac{\lambda_n/\sqrt{n}}{2(N_j/n)}.
+\]
+Since $N_j/n\xrightarrow{p}1/p$, its limiting
+behaviour depends on $\lambda_n/\sqrt{n}$.
+
+For all three penalty sequences considered,
+$\lambda_n/n\to0$, so $\tau_{j,n}\to_p0$.
+If $\beta_j>0$, consistency of OLS implies
+that $\widehat{\beta}_j>\tau_{j,n}$ with
+probability tending to one. Consequently,
+\[
+\sqrt{n}
+(\widehat{\beta}_{j,\mathrm{Lasso}}-\beta_j)
+=
+W_{j,n}-a_{j,n}
+\]
+with probability tending to one.
+
+If $\beta_j=0$, the scaling property of
+soft thresholding gives
+\[
+\sqrt{n}\widehat{\beta}_{j,\mathrm{Lasso}}
+=S(W_{j,n},a_{j,n}).
+\]
+
+\subsection*{Penalty $\lambda_n=\sqrt{n}$}
+
+Here $\lambda_n/\sqrt{n}=1$, so
+\[
+a_{j,n}\xrightarrow{p}\frac{p}{2}.
+\]
+For $\beta_j>0$, Slutsky's theorem gives
+\[
+\boxed{
+\sqrt{n}
+(\widehat{\beta}_{j,\mathrm{Lasso}}-\beta_j)
+\xrightarrow{d}N(-p/2,p).
+}
+\]
+
+For $\beta_j=0$, continuity of $S$ gives
+\[
+\boxed{
+\sqrt{n}\widehat{\beta}_{j,\mathrm{Lasso}}
+\xrightarrow{d}S(W,p/2),
+\qquad W\sim N(0,p).
+}
+\]
+Equivalently, the limiting variable is
+\[
+S(W,p/2)=
+\begin{cases}
+W-p/2, & W>p/2,\\
+0, & |W|\leq p/2,\\
+W+p/2, & W<-p/2.
+\end{cases}
+\]
+This distribution has a point mass at zero of
+\[
+P(|W|\leq p/2)
+=2\Phi(\sqrt{p}/2)-1.
+\]
+
+\subsection*{Penalty $\lambda_n=n^{1/4}$}
+
+Now $\lambda_n/\sqrt{n}=n^{-1/4}\to0$,
+so $a_{j,n}\to_p0$.
+
+For positive coefficients, the scaled shrinkage
+vanishes. For zero coefficients,
+$S(W,0)=W$. Thus, for every $\beta_j\geq0$,
+\[
+\boxed{
+\sqrt{n}
+(\widehat{\beta}_{j,\mathrm{Lasso}}-\beta_j)
+\xrightarrow{d}N(0,p).
+}
+\]
+LASSO therefore has the same first-order
+limiting distribution as OLS.
+
+\subsection*{Penalty $\lambda_n=n^{3/4}$}
+
+Here $\lambda_n/\sqrt{n}=n^{1/4}\to\infty$,
+so $a_{j,n}\to_p\infty$, although the
+unscaled threshold still satisfies
+$\tau_{j,n}\to_p0$.
+
+For $\beta_j>0$, since $W_{j,n}=O_p(1)$,
+\[
+\boxed{
+\sqrt{n}
+(\widehat{\beta}_{j,\mathrm{Lasso}}-\beta_j)
+\xrightarrow{p}-\infty.
+}
+\]
+There is therefore no proper limiting
+distribution on the real line at the
+$\sqrt{n}$ scale. The estimator remains
+consistent, but its shrinkage bias dominates
+at this scale.
+
+For $\beta_j=0$, tightness of $W_{j,n}$ and
+$a_{j,n}\to_p\infty$ imply
+\[
+P(|W_{j,n}|\leq a_{j,n})\to1.
+\]
+Hence the coefficient is set to zero with
+probability tending to one, and
+\[
+\boxed{
+\sqrt{n}\widehat{\beta}_{j,\mathrm{Lasso}}
+\xrightarrow{p}0.
+}
+\]
+Its limiting distribution is a point mass at zero.
+\section*{Problem 4(d)}
+
+Let
+\[
+\mathcal{U}=\{j:\beta_j=0\},
+\qquad |\mathcal{U}|=k,
+\]
+denote the useless types. We seek the probability
+that LASSO sets precisely these coefficients
+to zero when $\lambda_n=\sqrt{n}$.
+
+For $j\in\mathcal{U}$, the soft-thresholding
+rule implies
+\[
+\widehat{\beta}_{j,\mathrm{Lasso}}=0
+\quad\Longleftrightarrow\quad
+|\widehat{\beta}_j|
+\leq\frac{\sqrt{n}}{2N_j}.
+\]
+Equivalently,
+\[
+|\sqrt{n}\widehat{\beta}_j|
+\leq\frac{n}{2N_j}.
+\]
+
+By part (a), the scaled OLS estimates for
+the useless types converge jointly to
+independent $N(0,p)$ random variables.
+Also,
+\[
+\frac{n}{2N_j}\xrightarrow{p}\frac{p}{2}.
+\]
+Since the limiting normal variables have
+zero probability at the threshold boundaries,
+\[
+P(\widehat{\beta}_{j,\mathrm{Lasso}}=0)
+\longrightarrow
+P(|W_j|\leq p/2),
+\qquad W_j\sim N(0,p).
+\]
+Standardizing gives
+\[
+P(|W_j|\leq p/2)
+=
+P\left(|N(0,1)|\leq\frac{\sqrt{p}}{2}\right)
+=
+2\Phi(\sqrt{p}/2)-1.
+\]
+
+Using the joint convergence and independence
+of the limiting variables,
+\[
+\begin{aligned}
+&P\left(
+\widehat{\beta}_{j,\mathrm{Lasso}}=0
+\text{ for every }j\in\mathcal{U}
+\right)\\
+&\qquad\longrightarrow
+\left[2\Phi(\sqrt{p}/2)-1\right]^k.
+\end{aligned}
+\]
+
+For each useful type, $\beta_j>0$.
+Since $\widehat{\beta}_j\to_p\beta_j$ and
+$\sqrt{n}/(2N_j)\to_p0$, the probability
+that its LASSO estimate is nonzero tends to one.
+
+There are only finitely many useful types.
+Thus the probability that any useful type
+is incorrectly set to zero tends to zero.
+Consequently,
+\[
+\boxed{
+\begin{aligned}
+&P(\text{exactly the useless types are set to zero})\\
+&\qquad\longrightarrow
+\left[2\Phi(\sqrt{p}/2)-1\right]^k.
+\end{aligned}
+}
+\]
+
+For fixed $p$ and $k\geq1$, this limiting
+probability is strictly less than one.
+Therefore, the penalty $\lambda_n=\sqrt{n}$
+does not deliver consistent variable selection.
+If $k=0$, the expression equals one.
+\section*{Problem 5}
+
+No. Strict stationarity means that the joint
+distribution of $(y_t,x_t)$ is invariant to
+time shifts. When second moments exist, this
+implies a constant unconditional
+variance--covariance matrix. It does not,
+however, imply homoskedastic regression errors.
+
+For example, the error may satisfy
+\[
+E(u_t\mid x_t)=0,
+\qquad
+\operatorname{Var}(u_t\mid x_t)=h(x_t),
+\]
+where $h(x_t)$ varies with the realized
+regressor. By the law of total variance,
+\[
+\operatorname{Var}(u_t)=E[h(x_t)].
+\]
+This unconditional variance can remain
+constant because the distribution of $x_t$
+is time-invariant, even though the conditional
+variance differs across regressor values.
+
+Stationarity also permits serial correlation:
+autocovariances may depend on the lag between
+observations, while remaining invariant to
+a common time shift. Thus strict stationarity
+is compatible with both serial correlation
+and conditional heteroskedasticity.
 
 \end{document}
