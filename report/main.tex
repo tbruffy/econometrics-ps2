@@ -151,4 +151,733 @@ The restrictions do not produce a statistically
 significant deterioration in fit under the
 conventional F-test assumptions. This does not
 establish that the restricted model is true.
+\clearpage
+\section*{Problem 2(a)}
+
+Consider the regression
+\[
+y_i=\beta x_i+\epsilon_i,
+\qquad
+x_i=
+\begin{cases}
+i, & \text{if } i \text{ is even},\\
+0, & \text{if } i \text{ is odd},
+\end{cases}
+\]
+where the errors are independent and identically
+distributed as $N(0,1)$.
+
+We show that $\widehat{\beta}\xrightarrow{p}\beta$.
+
+For $n\geq2$, the OLS estimator in this regression
+without an intercept is
+\[
+\widehat{\beta}
+=\frac{\sum_{i=1}^n x_i y_i}
+       {\sum_{i=1}^n x_i^2}.
+\]
+Substituting $y_i=\beta x_i+\epsilon_i$ gives
+\[
+\widehat{\beta}-\beta
+=\frac{\sum_{i=1}^n x_i\epsilon_i}
+       {\sum_{i=1}^n x_i^2}.
+\]
+
+The regressors are deterministic, and
+$E(\epsilon_i)=0$. Therefore,
+\[
+E(\widehat{\beta}-\beta)=0.
+\]
+Since the errors are independent and have
+variance one,
+\[
+\operatorname{Var}\left(
+\sum_{i=1}^n x_i\epsilon_i
+\right)
+=\sum_{i=1}^n x_i^2.
+\]
+Consequently,
+\[
+\operatorname{Var}(\widehat{\beta})
+=\frac{\sum_{i=1}^n x_i^2}
+       {\left(\sum_{i=1}^n x_i^2\right)^2}
+=\frac{1}{\sum_{i=1}^n x_i^2}.
+\]
+
+There are $\lfloor n/2\rfloor$ even indices,
+each contributing at least four to the sum
+of squared regressors. Hence,
+\[
+\sum_{i=1}^n x_i^2
+=4\sum_{j=1}^{\lfloor n/2\rfloor}j^2
+\geq4\left\lfloor\frac n2\right\rfloor
+\longrightarrow\infty.
+\]
+It follows that
+$\operatorname{Var}(\widehat{\beta})\to0$.
+
+Finally, by Chebyshev's inequality, for every
+$\delta>0$,
+\[
+P\left(
+|\widehat{\beta}-\beta|>\delta
+\right)
+\leq
+\frac{\operatorname{Var}(\widehat{\beta})}{\delta^2}
+=
+\frac{1}{\delta^2\sum_{i=1}^n x_i^2}
+\longrightarrow0.
+\]
+Therefore,
+\[
+\boxed{\widehat{\beta}\xrightarrow{p}\beta,}
+\]
+so the OLS estimator is consistent.
+\section*{Problem 2(b)}
+
+Now suppose $x_i=\lambda^i$, where $|\lambda|<1$.
+First consider $0<|\lambda|<1$.
+
+As in part (a), the OLS estimation error is
+\[
+\widehat{\beta}-\beta
+=\frac{\sum_{i=1}^n\lambda^i\epsilon_i}
+       {\sum_{i=1}^n\lambda^{2i}}.
+\]
+Define
+\[
+S_n=\sum_{i=1}^n\lambda^{2i}.
+\]
+Since the errors are independent with mean zero
+and variance one,
+\[
+E(\widehat{\beta})=\beta,
+\qquad
+\operatorname{Var}(\widehat{\beta})=\frac{1}{S_n}.
+\]
+
+Using the geometric-series formula,
+\[
+S_n
+=\frac{\lambda^2(1-\lambda^{2n})}{1-\lambda^2}
+\longrightarrow
+\frac{\lambda^2}{1-\lambda^2}<\infty.
+\]
+Hence,
+\[
+\operatorname{Var}(\widehat{\beta})
+\longrightarrow
+\frac{1-\lambda^2}{\lambda^2}>0.
+\]
+
+A positive limiting variance alone does not
+establish inconsistency. However, because the
+estimation error is a linear combination of
+independent normal errors,
+\[
+\widehat{\beta}-\beta
+\sim N\left(0,\frac{1}{S_n}\right).
+\]
+Therefore, for any fixed $\delta>0$,
+\[
+\begin{aligned}
+P\left(|\widehat{\beta}-\beta|>\delta\right)
+&=2\left[1-\Phi\left(\delta\sqrt{S_n}\right)\right]\\
+&\longrightarrow
+2\left[
+1-\Phi\left(
+\frac{\delta|\lambda|}{\sqrt{1-\lambda^2}}
+\right)
+\right]
+>0,
+\end{aligned}
+\]
+where $\Phi$ is the standard normal cumulative
+distribution function.
+
+Thus the probability of a fixed estimation error
+does not converge to zero, so
+\[
+\boxed{
+\widehat{\beta}\text{ is inconsistent for }\beta
+\text{ when }0<|\lambda|<1.
+}
+\]
+
+Although the estimator is unbiased, later
+observations contribute progressively less
+information because the regressors shrink
+geometrically towards zero.
+
+If $\lambda=0$, then $x_i=0$ for every observation.
+In this case, $\beta$ is unidentified and the
+OLS coefficient is undefined.
+\section*{Problem 2(c)}
+
+The Gauss--Markov assumptions are:
+\begin{enumerate}
+    \item[(GM1)] Full column rank:
+    $\operatorname{rank}(X)=k$.
+    \item[(GM2)] Strict exogeneity:
+    $E(\epsilon\mid X)=0$.
+    \item[(GM3)] Homoskedasticity and no serial
+    correlation:
+    $\operatorname{Var}(\epsilon\mid X)=\sigma^2I_n$.
+\end{enumerate}
+
+There is one regressor and no intercept, so
+$k=1$. Full column rank therefore requires
+\[
+X'X=\sum_{i=1}^n x_i^2>0.
+\]
+
+For the regressor sequence in part (a), GM1 holds
+for $n\geq2$, since $x_2=2\neq0$.
+The zero entries at odd indices do not prevent
+the single regressor column from having full rank.
+
+For the sequence $x_i=\lambda^i$ in part (b),
+GM1 holds whenever $\lambda\neq0$, since
+$x_1=\lambda\neq0$.
+
+In both cases, $X$ is deterministic.
+Consequently, conditioning on $X$ does not change
+the distribution of the errors. Since the errors
+are i.i.d.\ $N(0,1)$,
+\[
+E(\epsilon\mid X)=0,
+\qquad
+\operatorname{Var}(\epsilon\mid X)=I_n.
+\]
+Thus GM2 and GM3 hold, with $\sigma^2=1$.
+
+Therefore, all three Gauss--Markov assumptions
+hold in part (a) for $n\geq2$, and in part (b)
+for $0<|\lambda|<1$. OLS is consequently the
+best linear unbiased estimator (BLUE) in both cases.
+If $\lambda=0$, GM1 fails and the OLS coefficient
+is undefined.
+
+There is no contradiction between this result
+and the inconsistency established in part (b).
+The Gauss--Markov theorem is a finite-sample
+variance comparison among linear unbiased
+estimators. It does not guarantee that the
+variance of OLS tends to zero as $n$ increases.
+
+In this problem,
+\[
+\operatorname{Var}(\widehat{\beta}\mid X)
+=\frac{1}{\sum_{i=1}^n x_i^2}.
+\]
+This variance tends to zero in part (a), but
+approaches a strictly positive constant in
+part (b). Hence OLS can be BLUE without
+being consistent.
+\section*{Problem 2(d)}
+
+Suppose $x_i=\lambda^i$, with $0<|\lambda|<1$.
+As established in part (b),
+\[
+\widehat{\beta}-\beta
+=\frac{\sum_{i=1}^n\lambda^i\epsilon_i}{S_n},
+\qquad
+S_n=\sum_{i=1}^n\lambda^{2i}.
+\]
+
+Because the errors are independent normal
+variables, the estimator has the exact
+finite-sample distribution
+\[
+\widehat{\beta}
+\sim N\left(\beta,\frac{1}{S_n}\right).
+\]
+
+The geometric-series formula gives
+\[
+S_n
+=\frac{\lambda^2(1-\lambda^{2n})}{1-\lambda^2}
+\longrightarrow
+\frac{\lambda^2}{1-\lambda^2}.
+\]
+Consequently,
+\[
+\frac{1}{S_n}
+\longrightarrow
+\frac{1-\lambda^2}{\lambda^2}>0.
+\]
+
+Since the normal means remain equal to $\beta$
+and the variances converge, it follows that
+\[
+\boxed{
+\widehat{\beta}\xrightarrow{d}
+N\left(
+\beta,\frac{1-\lambda^2}{\lambda^2}
+\right).
+}
+\]
+
+The limiting distribution is nondegenerate:
+its variance is strictly positive. This is
+consistent with the inconsistency shown in
+part (b).
+
+If $\lambda=0$, the OLS coefficient is undefined,
+so the result applies only to $0<|\lambda|<1$.
+\clearpage
+\section*{Problem 3(a)}
+
+Under the null hypothesis,
+$\sigma_1^2=\sigma_2^2=\sigma^2>0$.
+We show that
+\[
+T=
+\sqrt{\frac{n_1n_2}{n_1+n_2}}
+\left(\log s_1^2-\log s_2^2\right)
+\xrightarrow{d}N(0,2).
+\]
+
+First consider either sample $j\in\{1,2\}$.
+Normality implies
+\[
+Q_j=\frac{(n_j-1)s_j^2}{\sigma^2}
+\sim\chi^2_{n_j-1}.
+\]
+Write $m_j=n_j-1$. A chi-squared variable with
+$m_j$ degrees of freedom has the distribution
+of a sum of $m_j$ independent squared standard
+normal variables.
+
+For $Z\sim N(0,1)$,
+\[
+E(Z^2)=1,
+\qquad
+\operatorname{Var}(Z^2)
+=E(Z^4)-[E(Z^2)]^2
+=3-1=2.
+\]
+The central limit theorem therefore gives
+\[
+\frac{Q_j-m_j}{\sqrt{m_j}}
+\xrightarrow{d}N(0,2).
+\]
+Since
+\[
+\frac{Q_j-m_j}{\sqrt{m_j}}
+=
+\frac{\sqrt{m_j}}{\sigma^2}
+(s_j^2-\sigma^2),
+\]
+and $\sqrt{n_j/m_j}\to1$, it follows that
+\[
+\sqrt{n_j}(s_j^2-\sigma^2)
+\xrightarrow{d}N(0,2\sigma^4).
+\]
+
+Now apply the delta method with $g(x)=\log x$.
+Because $g'(\sigma^2)=1/\sigma^2$,
+\[
+A_j
+:=\sqrt{n_j}
+\left(\log s_j^2-\log\sigma^2\right)
+\xrightarrow{d}N(0,2).
+\]
+The asymptotic variance is
+$(1/\sigma^2)^2(2\sigma^4)=2$.
+
+The samples are independent, so the joint limit is
+\[
+(A_1,A_2)\xrightarrow{d}(Z_1,Z_2),
+\]
+where $Z_1$ and $Z_2$ are independent
+$N(0,2)$ random variables.
+
+Under the null, the common population
+log variance cancels, giving
+\[
+T=
+\sqrt{\frac{n_2}{n_1+n_2}}\,A_1
+-
+\sqrt{\frac{n_1}{n_1+n_2}}\,A_2.
+\]
+Since $n_1/n_2\to c\in(0,\infty)$,
+\[
+\sqrt{\frac{n_2}{n_1+n_2}}
+\longrightarrow\frac{1}{\sqrt{1+c}},
+\qquad
+\sqrt{\frac{n_1}{n_1+n_2}}
+\longrightarrow\sqrt{\frac{c}{1+c}}.
+\]
+By Slutsky's theorem,
+\[
+T\xrightarrow{d}
+\frac{Z_1}{\sqrt{1+c}}
+-\sqrt{\frac{c}{1+c}}\,Z_2.
+\]
+
+This limit is normal with mean zero.
+Independence implies that its variance is
+\[
+\frac{2}{1+c}+\frac{2c}{1+c}=2.
+\]
+Therefore,
+\[
+\boxed{T\xrightarrow{d}N(0,2).}
+\]
+\section*{Problem 3(b)}
+
+We work under normality and the null hypothesis
+$\sigma_1^2=\sigma_2^2$. All limits are taken as
+$n_1,n_2\to\infty$ with $n_1/n_2\to c\in(0,\infty)$.
+
+Define
+\[
+V_n=\frac{s_1^2}{s_2^2},
+\qquad
+k_n=\frac{n_1n_2}{n_1+n_2},
+\qquad
+T_n=\sqrt{k_n}\log V_n.
+\]
+Under these assumptions,
+\[
+V_n\sim F_{n_1-1,n_2-1}.
+\]
+
+Let $f_n$ denote the 95th percentile of this
+F-distribution. The finite-sample test rejects
+when $V_n>f_n$. Since the logarithm is strictly
+increasing, this is equivalent to
+\[
+T_n>b_n,
+\qquad
+b_n=\sqrt{k_n}\log f_n.
+\]
+The asymptotic test rejects when
+\[
+T_n>a,
+\qquad
+a=\sqrt{2}\,z_{0.95},
+\]
+where $z_{0.95}=\Phi^{-1}(0.95)$.
+
+We first show that $b_n\to a$.
+The monotonic transformation implies that
+$b_n$ is the exact 95th percentile of $T_n$
+under the normal null hypothesis.
+
+Let $H_n$ be the cumulative distribution
+function of $T_n$. By part (a),
+\[
+T_n\xrightarrow{d}N(0,2),
+\]
+whose cumulative distribution function is
+\[
+H(t)=\Phi(t/\sqrt{2}).
+\]
+This function is continuous and strictly
+increasing, with $H(a)=0.95$.
+
+For any $\varepsilon>0$,
+\[
+H(a-\varepsilon)<0.95<H(a+\varepsilon).
+\]
+Convergence in distribution implies that,
+for sufficiently large sample sizes,
+\[
+H_n(a-\varepsilon)<0.95<H_n(a+\varepsilon).
+\]
+Therefore,
+\[
+a-\varepsilon<b_n<a+\varepsilon,
+\]
+which establishes $b_n\to a$.
+
+The two tests can disagree only when $T_n$
+lies between $a$ and $b_n$. For any
+$\varepsilon>0$, eventually
+$|b_n-a|<\varepsilon$, so
+\[
+P(\text{disagreement})
+\leq
+P(a-\varepsilon\leq T_n\leq a+\varepsilon).
+\]
+Since the limiting distribution is continuous,
+\[
+\limsup P(\text{disagreement})
+\leq
+H(a+\varepsilon)-H(a-\varepsilon).
+\]
+Letting $\varepsilon\downarrow0$ and using
+continuity of $H$ gives
+\[
+\boxed{
+P(\text{the two tests disagree})\longrightarrow0.
+}
+\]
+
+Thus the finite-sample normal-theory test and
+the asymptotic test are asymptotically
+equivalent under the null hypothesis.
+\section*{Problem 3(c)}
+
+Suppose the two populations have the common
+standardized distribution $F_0$. Write
+\[
+Y_{ji}=\mu_j+\sigma_j Z_{ji},
+\]
+where the standardized observations satisfy
+\[
+E(Z_{ji})=0,
+\qquad
+E(Z_{ji}^2)=1,
+\qquad
+E(Z_{ji}^4)=\kappa<\infty.
+\]
+The observations are i.i.d.\ within each sample,
+and the two samples are independent.
+Here $\kappa$ denotes ordinary kurtosis,
+not excess kurtosis.
+
+We first note that
+\[
+\operatorname{Var}(Z_{ji}^2)
+=E(Z_{ji}^4)-[E(Z_{ji}^2)]^2
+=\kappa-1.
+\]
+The central limit theorem therefore gives
+\[
+\frac{1}{\sqrt{n_j}}
+\sum_{i=1}^{n_j}(Z_{ji}^2-1)
+\xrightarrow{d}N(0,\kappa-1).
+\]
+
+Let $\bar Z_j$ denote the sample mean of the
+standardized observations. The sample variance
+satisfies
+\[
+\frac{s_j^2}{\sigma_j^2}
+=
+\frac{n_j}{n_j-1}
+\left[
+\frac{1}{n_j}\sum_{i=1}^{n_j}Z_{ji}^2
+-\bar Z_j^2
+\right].
+\]
+
+Since $\bar Z_j=O_p(n_j^{-1/2})$,
+\[
+\sqrt{n_j}\,\bar Z_j^2
+=O_p(n_j^{-1/2})
+=o_p(1).
+\]
+Also, $n_j/(n_j-1)=1+O(n_j^{-1})$, so the
+degrees-of-freedom correction has a negligible
+effect at the $\sqrt{n_j}$ scale.
+Consequently,
+\[
+\sqrt{n_j}
+\left(\frac{s_j^2}{\sigma_j^2}-1\right)
+=
+\frac{1}{\sqrt{n_j}}
+\sum_{i=1}^{n_j}(Z_{ji}^2-1)
++o_p(1).
+\]
+By Slutsky's theorem,
+\[
+\sqrt{n_j}
+\left(\frac{s_j^2}{\sigma_j^2}-1\right)
+\xrightarrow{d}N(0,\kappa-1).
+\]
+
+Now apply the delta method with $g(x)=\log x$
+around $x=1$. Since $g'(1)=1$,
+\[
+A_j
+:=
+\sqrt{n_j}
+\left(\log s_j^2-\log\sigma_j^2\right)
+\xrightarrow{d}N(0,\kappa-1).
+\]
+Independence of the samples gives the joint limit
+\[
+(A_1,A_2)\xrightarrow{d}(W_1,W_2),
+\]
+where $W_1$ and $W_2$ are independent
+$N(0,\kappa-1)$ random variables.
+
+Under the null hypothesis,
+$\sigma_1^2=\sigma_2^2$, the population log
+variances cancel. Therefore,
+\[
+T=
+\sqrt{\frac{n_2}{n_1+n_2}}\,A_1
+-
+\sqrt{\frac{n_1}{n_1+n_2}}\,A_2.
+\]
+As $n_1,n_2\to\infty$ with
+$n_1/n_2\to c\in(0,\infty)$, Slutsky's theorem
+implies
+\[
+T\xrightarrow{d}
+\frac{W_1}{\sqrt{1+c}}
+-\sqrt{\frac{c}{1+c}}\,W_2.
+\]
+
+This limit is normal with mean zero.
+Its variance is
+\[
+\frac{\kappa-1}{1+c}
++\frac{c(\kappa-1)}{1+c}
+=\kappa-1.
+\]
+Hence,
+\[
+\boxed{T\xrightarrow{d}N(0,\kappa-1).}
+\]
+
+For a normal population, $\kappa=3$, which
+recovers the $N(0,2)$ limit obtained in part (a).
+\section*{Problem 3(d)}
+
+The normal-theory test uses the $N(0,2)$
+reference distribution. Its asymptotic
+critical value is
+\[
+a=\sqrt{2}\,z_{0.95}
+\approx\sqrt{2}(1.644854)
+\approx2.326174.
+\]
+As established in part (b), the transformed
+finite-sample F-test cutoff also converges
+to this value.
+
+However, when the true population kurtosis
+is $\kappa=5$, part (c) gives
+\[
+T\xrightarrow{d}N(0,\kappa-1)=N(0,4).
+\]
+Since this limiting distribution is continuous,
+the actual asymptotic rejection probability
+under the null is
+\[
+\begin{aligned}
+P\bigl(N(0,4)>a\bigr)
+&=1-\Phi\left(\frac{a}{2}\right)\\
+&=1-\Phi\left(\frac{z_{0.95}}{\sqrt{2}}\right)\\
+&\approx1-\Phi(1.163087)\\
+&\approx0.1224.
+\end{aligned}
+\]
+
+Therefore,
+\[
+\boxed{
+\text{Actual asymptotic size}\approx12.24\%.
+}
+\]
+
+The test is oversized: although its nominal
+significance level is $5\%$, its asymptotic
+probability of rejecting a true null is
+approximately $12.24\%$.
+
+The higher kurtosis increases the asymptotic
+variance of $T$, making the normal-theory
+critical value too low.
+\section*{Problem 3(e)}
+
+Let group 1 denote females and group 2 denote
+males, and define $Y_{ji}$ as log hourly wage.
+We test
+\[
+H_0:\sigma_1^2=\sigma_2^2
+\qquad\text{against}\qquad
+H_1:\sigma_1^2>\sigma_2^2.
+\]
+The sample contains $n_1=1569$ females and
+$n_2=1727$ males. The sample log-wage variances are
+\[
+s_1^2=0.397877,
+\qquad
+s_2^2=0.366413.
+\]
+
+The log-variance statistic is
+\[
+T=
+\sqrt{\frac{n_1n_2}{n_1+n_2}}
+\left(\log s_1^2-\log s_2^2\right)
+=2.362096.
+\]
+
+Using deviations from each group's own sample
+mean, we estimate kurtosis by
+\[
+\widehat{\kappa}
+=
+\frac{
+(n_1+n_2)
+\sum_{j=1}^{2}\sum_{i=1}^{n_j}
+(Y_{ji}-\bar Y_j)^4
+}{
+\left[
+\sum_{j=1}^{2}\sum_{i=1}^{n_j}
+(Y_{ji}-\bar Y_j)^2
+\right]^2
+}
+=7.378121.
+\]
+
+Under the framework in part (c), the
+kurtosis-adjusted statistic is
+\[
+Z_{\mathrm{adj}}
+=\frac{T}{\sqrt{\widehat{\kappa}-1}}
+=0.935300.
+\]
+Comparing this statistic with $N(0,1)$ gives
+the one-sided p-value
+\[
+p_{\mathrm{adj}}
+=1-\Phi(0.935300)
+\approx0.174817.
+\]
+Since this exceeds $0.05$, we do not reject
+equal population log-wage variances at the
+5\% significance level.
+
+For comparison, the standard normal-theory
+test uses
+\[
+F=\frac{s_1^2}{s_2^2}=1.085871.
+\]
+Under normality and the null hypothesis,
+this statistic follows an $F_{1568,1726}$
+distribution. Its upper-tail p-value is
+approximately $0.047347$, so the conventional
+test rejects at the 5\% level.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{One-sided tests of equal log-wage variances}
+\label{tab:ps3e}
+\input{ps3e_results.tex}
+\end{table}
+
+The two procedures therefore give different
+decisions. Estimated kurtosis is substantially
+above the normal-distribution value of three.
+The kurtosis adjustment accounts for the
+greater asymptotic variability of the
+log-variance statistic.
+
+Although the female sample variance is higher,
+the adjusted test does not provide statistically
+significant evidence that the female population
+log-wage variance exceeds the male variance.
+The conventional rejection is sensitive to
+the normality assumption.
+
 \end{document}
